@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+   <!DOCTYPE html>
+   <html lang="en">
+      <head>
+         <meta charset="UTF-8">
+         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+         <title>카데나 쿨감표</title>
+         <style>
+            /* Global styles */
+            body {
+            font-family: '맑은 고딕', sans-serif;
+            }
+            .content > * {
+            padding-top: 20px;
+            }
+            h3 {
+            text-align: center;
+            }
+            /* Table styles */
+            table {
+            width: 80%;
+            margin: 10px auto;
+            border-collapse: collapse;
+            font-size: 12px;
+            }
+            th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+            }
+            th {
+            background-color: #f2f2f2;
+            }
+            tr:nth-child(even) {
+            background-color: #f9f9f9;
+            }
+            .highlight-row td,
+            .highlight-row th,
+            .highlight-col {
+            background-color: rgba(221, 221, 221, 0.6);
+            }
+            .first-cell {
+            width: 10%;
+            }
+            td {
+            width: calc((80%) / 11);
+            }
+            /* Sidebar styles */
+            .sidebar {
+            height: 100%;
+            width: 250px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #111;
+            padding-top: 20px;
+            transition: 0.5s;
+            z-index: 1;
+            }
+            .sidebar a {
+            padding: 10px 15px;
+            text-decoration: none;
+            font-size: 25px;
+            color: #818181;
+            display: block;
+            transition: 0.3s;
+            }
+            .sidebar a:hover {
+            color: #f1f1f1;
+            }
+            .sidebar a.active-tab {
+            color: #f1f1f1;
+            }
+            .footer {
+            position: absolute;
+            bottom: 45px;
+            width: 100%;
+            font-size: 12px;
+            text-align: center;
+            color: #818181;
+            }
+            .footer a {
+            text-decoration: underline;
+            font-size: 12px;
+            color: #818181;
+            }
+            .footer a:hover {
+            color: #f1f1f1;
+            }
+            .content {
+            margin-left: 260px;
+            padding: 1px 16px;
+            }
+            /* Dark Mode Styles */
+            body.dark-mode {
+            background-color: #222;
+            color: #f1f1f1;
+            }
+            body.dark-mode table th {
+            background-color: #333;
+            }
+            body.dark-mode table tr:nth-child(even) {
+            background-color: #2a2a2a;
+            }
+            /* Dark Mode Toggle Switch */
+            .switch {
+            position: relative;
+            display: inline-block;
+            width: 40px;
+            height: 20px;
+            background: #eee;
+            }
+            .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+            }
+            .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ddd;
+            transition: .4s;
+            }
+            .slider:before {
+            position: absolute;
+            content: "\2600"; /* Sun icon */
+            height: 12px;
+            width: 12px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            font-size: 12px;
+            text-align: center;
+            line-height: 12px;
+            transition: .4s;
+            }
+            input:checked + .slider {
+            background-color: #444;
+            }
+            input:checked + .slider:before {
+            transform: translateX(21px);
+            content: "\263D"; /* Moon icon */
+            background-color: #222;
+            }
+            /* Dark Mode Styles based on a data-theme attribute */
+            body[data-theme='light'] {
+            background-color: white;
+            color: black;
+            }
+            body[data-theme='dark'] {
+            background-color: #222;
+            color: #f1f1f1;
+            }
+            body[data-theme='dark'] table th {
+            background-color: #333;
+            }
+            body[data-theme='dark'] table tr:nth-child(even) {
+            background-color: #2a2a2a;
+            }
+         </style>
+      </head>
+      <body>
+         <div class="sidebar">
+            <a href="javascript:void(0);" id="tab1" onclick="showTab('page1')" class="active-tab" style="color:#f1f1f1;">카데나 쿨감표</a>
+            <a href="javascript:void(0);" id="tab2" onclick="showTab('page2')">쿨감 조건간 비교</a>
+            <!-- Dark Mode Toggle -->
+            <div class="footer">
+               <div class="dark-mode-toggle">
+                  <label class="switch">
+                  <input type="checkbox" id="darkModeCheckbox">
+                  <span class="slider round"></span>
+                  </label>
+               </div>
+               <br><br>
+               made by <a href="https://open.kakao.com/me/kimaling" target="_blank">엘리시움 키말링</a>
+            </div>
+         </div>
+         <div class="content">
+         <div id="page1">
+            메르 유니온 효과 레벨:
+            <select id="mercedesEffect" onchange="populateTable()">
+               <option value="0.00">미적용</option>
+               <option value="0.02">B (2%)</option>
+               <option value="0.03">A (3%)</option>
+               <option value="0.04">S (4%)</option>
+               <option value="0.05" selected>SS (5%)</option>
+               <option value="0.06">SSS (6%)</option>
+            </select>
+            <br>
+            <h3>버프 스킬</h3>
+            <table id="buffSkillTable">
+               <thead>
+                  <tr>
+                     <th class="skill-name">스킬</th>
+                     <th>기본</th>
+                     <th>0 초</th>
+                     <th>1 초</th>
+                     <th>2 초</th>
+                     <th>3 초</th>
+                     <th>4 초</th>
+                     <th>5 초</th>
+                     <th>6 초</th>
+                     <th>7 초</th>
+                     <th>8 초</th>
+                     <th>9 초</th>
+                  </tr>
+               </thead>
+               <tbody>
+                  <!-- js will populate this -->
+               </tbody>
+            </table>
+            <h3>공격 스킬</h3>
+            <table id="attackSkillTable">
+               <thead>
+                  <tr>
+                     <th class="skill-name">스킬</th>
+                     <th>기본</th>
+                     <th>0 초</th>
+                     <th>1 초</th>
+                     <th>2 초</th>
+                     <th>3 초</th>
+                     <th>4 초</th>
+                     <th>5 초</th>
+                     <th>6 초</th>
+                     <th>7 초</th>
+                     <th>8 초</th>
+                     <th>9 초</th>
+                  </tr>
+               </thead>
+               <tbody>
+                  <!-- js will populate this -->
+               </tbody>
+            </table>
+            <h3>유틸 스킬</h3>
+            <table id="utilitySkillTable">
+               <thead>
+                  <tr>
+                     <th class="skill-name">스킬</th>
+                     <th>기본</th>
+                     <th>0 초</th>
+                     <th>1 초</th>
+                     <th>2 초</th>
+                     <th>3 초</th>
+                     <th>4 초</th>
+                     <th>5 초</th>
+                     <th>6 초</th>
+                     <th>7 초</th>
+                     <th>8 초</th>
+                     <th>9 초</th>
+                  </tr>
+               </thead>
+               <tbody>
+                  <!-- js will populate this -->
+               </tbody>
+            </table>
+         </div>
+         <div id="page2" style="display: none;">
+         <div class="analysis-container">
+            <div class="scenario" id="scenario1Options">
+               <h2 class="scenario-header">쿨감 조건 #1</h2>
+               <div class="option">
+                  <label>쿨뚝:</label>
+                  <input type="number" size="5" id="scenario1HatPot" value="0" min="0" max="9" onchange="populateAnalysisTable()">
+               </div>
+               <div class="option">
+                  <label>메르:</label>
+                  <select id="scenario1MercedesEffect" onchange="populateAnalysisTable()">
+                     <option value="0.00">미적용</option>
+                     <option value="0.02">B (2%)</option>
+                     <option value="0.03">A (3%)</option>
+                     <option value="0.04">S (4%)</option>
+                     <option value="0.05" selected>SS (5%)</option>
+                     <option value="0.06">SSS (6%)</option>
+                  </select>
+               </div>
+            </div>
+            <div class="scenario" id="scenario2Options">
+               <h2 class="scenario-header">쿨감 조건 #2</h2>
+               <div class="option">
+                  <label>쿨뚝:</label>
+                  <input type="number" id="scenario2HatPot" size="5" value="0" min="0" max="9" onchange="populateAnalysisTable()">
+               </div>
+               <div class="option">
+                  <label>메르:</label>
+                  <select id="scenario2MercedesEffect" onchange="populateAnalysisTable()">
+                     <option value="0.00">미적용</option>
+                     <option value="0.02">B (2%)</option>
+                     <option value="0.03">A (3%)</option>
+                     <option value="0.04">S (4%)</option>
+                     <option value="0.05" selected>SS (5%)</option>
+                     <option value="0.06">SSS (6%)</option>
+                  </select>
+               </div>
+            </div>
+         </div>
+         <style>
+            .analysis-container {
+            width: 80%; 
+            margin: 10px auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            }
+            .scenario {
+            display: flex;
+            flex: 1;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            }
+         </style>
+         <!-- Inside div#page2 -->
+         <h3>버프 스킬</h3>
+         <table id="analysisBuffSkillTable">
+            <thead>
+               <tr>
+                  <th class="skill-name">스킬</th>
+                  <th>쿨감 조건 #1</th>
+                  <th>쿨감 조건 #2</th>
+                  <th>쿨 차이</th>
+                  <th>%</th>
+               </tr>
+            </thead>
+            <tbody></tbody>
+         </table>
+         <h3>공격 스킬</h3>
+         <table id="analysisAttackSkillTable">
+            <thead>
+               <tr>
+                  <th class="skill-name">스킬</th>
+                  <th>쿨감 조건 #1</th>
+                  <th>쿨감 조건 #2</th>
+                  <th>쿨 차이</th>
+                  <th>%</th>
+               </tr>
+            </thead>
+            <tbody>
+         </table>
+         <h3>유틸 스킬</h3>
+         <table id="analysisUtilitySkillTable">
+            <thead>
+               <tr>
+                  <th class="skill-name">스킬</th>
+                  <th>쿨감 조건 #1</th>
+                  <th>쿨감 조건 #2</th>
+                  <th>쿨 차이</th>
+                  <th>%</th>
+               </tr>
+            </thead>
+            <tbody>
+         </table>
+         <script>
+            function showTab(tabId) {
+                console.log("Tab ID to show:", tabId);  // Log to the console for debugging
+            
+                // Hide all tabs and remove highlights
+                ['page1', 'page2'].forEach(id => {  // removed 'page3' as it's not in your HTML currently
+                    document.getElementById(id).style.display = 'none';
+                    document.getElementById('tab' + id.charAt(id.length - 1)).style.color = "#818181"; 
+                    document.getElementById('tab' + id.charAt(id.length - 1)).classList.remove("active-tab");
+                });
+            
+                // Show the clicked tab and apply the highlight
+                document.getElementById(tabId).style.display = 'block';
+                document.getElementById('tab' + tabId.charAt(tabId.length - 1)).style.color = "#f1f1f1";
+                document.getElementById('tab' + tabId.charAt(tabId.length - 1)).classList.add("active-tab");
+            }
+            
+            document.addEventListener("DOMContentLoaded", function() {
+                showTab('page1');
+            });
+            
+         </script>
+         <script src="script.js"></script>
+      </body>
+   </html>
